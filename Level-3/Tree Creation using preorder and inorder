@@ -1,0 +1,79 @@
+Java ------
+
+class Solution {
+
+    int idx = 0; // global index for preorder traversal
+
+    public TreeNode solve(int[] preorder, int[] inorder, int start, int end) {
+        if (start > end) {
+            return null;
+        }
+
+        // create a new root node with current preorder value
+        TreeNode root = new TreeNode(preorder[idx]);
+
+        // find that value's position in inorder array
+        int i = start;
+        for (; i <= end; i++) {
+            if (inorder[i] == preorder[idx]) {
+                break;
+            }
+        }
+
+        idx++; // move preorder index to next element
+
+        // recursively build left and right subtrees
+        root.left = solve(preorder, inorder, start, i - 1);
+        root.right = solve(preorder, inorder, i + 1, end);
+
+        return root;
+    }
+
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        idx = 0; // reset index for each new call
+        int n = preorder.length;
+        return solve(preorder, inorder, 0, n - 1);
+    }
+}
+
+
+CPP------
+
+class Solution {
+public:
+    int idx = 0; // global index for preorder traversal
+
+    TreeNode* solve(vector<int>& preorder, vector<int>& inorder, int start, int end) {
+        if (start > end) {
+            return nullptr;
+        }
+
+        // create a new root node with current preorder value
+        TreeNode* root = new TreeNode(preorder[idx]);
+
+        // find that value's position in inorder array
+        int i = start;
+        for (; i <= end; i++) {
+            if (inorder[i] == preorder[idx]) {
+                break;
+            }
+        }
+
+        idx++; // move preorder index to next element
+
+        // recursively build left and right subtrees
+        root->left = solve(preorder, inorder, start, i - 1);
+        root->right = solve(preorder, inorder, i + 1, end);
+
+        return root;
+    }
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        idx = 0; // reset for each call
+        int n = preorder.size();
+        return solve(preorder, inorder, 0, n - 1);
+    }
+};
+
+TC: O(n^2) (checking for each node in the for loop and each element visiting n noes in worst case possible)
+SC: O(n) {stack space}
